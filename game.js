@@ -8,7 +8,7 @@ var level = 0;
 
 var started = false;
 
-$(document).on('keypress', function() {
+$("#level-title").click(function() {
   if (!started) {
     $("#level-title").text("Level " + level);
     nextSequence();
@@ -51,9 +51,20 @@ function nextSequence() {
 
   gamePattern.push(randomChosenColor);
 
-  $("#" + randomChosenColor).fadeOut(100).fadeIn(100);
+  var i = 0;
 
-  playSound(randomChosenColor);
+  function myLoop() {
+    setTimeout(function() {
+      $("#" + gamePattern[i]).fadeOut(100).fadeIn(100);
+      playSound(gamePattern[i]);
+      i++;
+      if (i < gamePattern.length) {
+        myLoop();
+      }
+    }, 1000)
+  }
+
+  myLoop();
 
   level++;
 
